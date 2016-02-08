@@ -59,14 +59,14 @@ void do_keypad()
 {
 	unsigned long joy;
 	int bVert = 0;
-	
+
 	FBA_KEYPAD[0] = 0;
 	FBA_KEYPAD[1] = 0;
 	FBA_KEYPAD[2] = 0;
 	FBA_KEYPAD[3] = 0;
 	ServiceRequest = 0;
 	P1P2Start = 0;
-	
+
 	//for (int i=0;i<joyCount;i++) {
 	//Always check for two players, i.e. keyboard input
 	for (int i=0;i<joyCount;i++) {
@@ -77,10 +77,10 @@ void do_keypad()
 		if ( joy & GP2X_DOWN ) 	FBA_KEYPAD[i] |= bVert?0x0008:0x0002;
 		if ( joy & GP2X_LEFT ) 	FBA_KEYPAD[i] |= bVert?0x0002:0x0004;
 		if ( joy & GP2X_RIGHT ) FBA_KEYPAD[i] |= bVert?0x0001:0x0008;
-		
-		if ( joy & GP2X_SELECT )	FBA_KEYPAD[i] |= 0x0010;	
-		if ( joy & GP2X_START )		FBA_KEYPAD[i] |= 0x0020;	
-		
+
+		if ( joy & GP2X_SELECT )	FBA_KEYPAD[i] |= 0x0010;
+		if ( joy & GP2X_START )		FBA_KEYPAD[i] |= 0x0020;
+
 		if ( joy & GP2X_A )	FBA_KEYPAD[i] |= 0x0040;	// A
 		if ( joy & GP2X_X )	FBA_KEYPAD[i] |= 0x0080;	// B
 		if ( joy & GP2X_B )	FBA_KEYPAD[i] |= 0x0100;	// C
@@ -97,7 +97,7 @@ void do_keypad()
 		if ( joy & GP2X_START && joy & GP2X_SELECT) GameLooping = false;
 
 	}
-    
+
 //sq
 //	for (int i=0;i<joyCount;i++)
 //	{
@@ -115,7 +115,7 @@ void do_keypad()
 //				FBA_KEYPAD[i] |= joyMap[nButton];
 //		}
 //	}
-    
+
 }
 
 int DrvInit(int nDrvNum, bool bRestore);
@@ -126,7 +126,7 @@ int RunOneFrame(bool bDraw, int fps);
 
 int VideoInit();
 void VideoExit();
- 
+
 int InpInit();
 int InpExit();
 void InpDIP();
@@ -144,10 +144,10 @@ void show_rom_loading_text(char * szText, int nSize, int nTotalSize)
 	//printf("!!! %s, %d / %d\n", szText, size + nSize, nTotalSize);
 
 	DrawRect((uint16 *) titlefb, 20, 120, 300, 20, 0, 320);
-	
+
 	if (szText)
 		DrawString (szText, (uint16 *) titlefb, 20, 120, 320);
-	
+
 	if (nTotalSize == 0) {
 		size = 0;
 		DrawRect((uint16 *) titlefb, 20, 140, 280, 12, 0x00FFFFFF, 320);
@@ -158,7 +158,7 @@ void show_rom_loading_text(char * szText, int nSize, int nTotalSize)
 		DrawRect((uint16 *) titlefb, 21, 141, size * 278 / nTotalSize, 10, 0x00FFFF00, 320);
 	}
 
-	memcpy (VideoBuffer, titlefb, 320*240*2); 
+	memcpy (VideoBuffer, titlefb, 320*240*2);
 	pi_video_flip();
 }
 
@@ -177,7 +177,7 @@ void run_fba_emulator(const char *fn)
 		bShowFPS=true;
 
 	BurnLibInit();
-	
+
 	// find rom by name
 	for (nBurnDrvSelect=0; nBurnDrvSelect<nBurnDrvCount; nBurnDrvSelect++)
 		if ( strcasecmp(romname, BurnDrvGetTextA(DRV_NAME)) == 0 )
@@ -189,20 +189,20 @@ void run_fba_emulator(const char *fn)
 		printf ("rom not supported!\n");
 		goto finish;
 	}
-	
+
 	logoutput("Attempt to initialise '%s'\n", BurnDrvGetTextA(DRV_FULLNAME));
-	
+
 	memset (titlefb, 0, 320*240*2);
 	DrawString (build_version, (uint16*)&titlefb, 10, 20, 320);
 	DrawString ("Based on FinalBurnAlpha", (uint16*)&titlefb, 10, 35, 320);
-	DrawString ("Now loading ... ", (uint16 *)&titlefb, 10, 105, 320);	
+	DrawString ("Now loading ... ", (uint16 *)&titlefb, 10, 105, 320);
 	show_rom_loading_text("Open Zip", 0, 0);
-	memcpy (VideoBuffer, titlefb, 320*240*2); 
+	memcpy (VideoBuffer, titlefb, 320*240*2);
 	pi_video_flip();
-	 	
+
 	InpInit();
 	InpDIP();
-	
+
 	VideoInit();
 
 	if (DrvInit(nBurnDrvSelect, false) != 0) {
@@ -227,7 +227,7 @@ void run_fba_emulator(const char *fn)
 		bool bRenderFrame;
 
 		if (SndOpen() == 0)
-		{		
+		{
 			while (GameLooping)
 			{
 					if (bShowFPS)
@@ -240,8 +240,8 @@ void run_fba_emulator(const char *fn)
 							tick = timer;
 						}
 					}
-					//We need to render more audio:  
-		
+					//We need to render more audio:
+
 					bRenderFrame=true; // Render last frame
 					RunOneFrame(bRenderFrame,fps);
 
@@ -254,7 +254,7 @@ void run_fba_emulator(const char *fn)
 	{
 		int now, done=0, timer = 0, ticks=0, tick=0, i=0, fps = 0;
 		unsigned int frame_limit = nBurnFPS/100, frametime = 100000000/nBurnFPS;
-		
+
 		while (GameLooping)
 		{
 			timer = EZX_GetTicks()/frametime;;
@@ -270,19 +270,19 @@ void run_fba_emulator(const char *fn)
 			if(ticks>10) ticks=10;
 			for (i=0; i<ticks-1; i++)
 			{
-				RunOneFrame(false,fps);	
-			} 
+				RunOneFrame(false,fps);
+			}
 			if(ticks>=1)
 			{
-				RunOneFrame(true,fps);	
+				RunOneFrame(true,fps);
 			}
-			
+
 			done = now;
 		}
 	}
-	
+
 	logoutput ("Finished emulating\n");
-	
+
 finish:
 	logoutput("---- Shutdown Finalburn Alpha plus ----\n\n");
 	DrvExit();

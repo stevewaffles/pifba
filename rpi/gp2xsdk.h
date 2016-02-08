@@ -71,6 +71,10 @@ enum {
 #define RPI_KEY_QSAVE   SDLK_F2
 
 //Default joy button configuration
+#define RPI_JOY_UP      -1
+#define RPI_JOY_DOWN    -1
+#define RPI_JOY_LEFT    -1
+#define RPI_JOY_RIGHT   -1
 #define RPI_JOY_A       3
 #define RPI_JOY_B       2
 #define RPI_JOY_X       1
